@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  
+  # Backend API
+  smart-brain-api:
+    container_name: backend
+    build: ./
+    command: npm start
+    working_dir: /Users/sellgren/web/dev/ztm/codeAnalysis/smart-brain-api
+    environment:
+      POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
+      REDIS_URI: redis://redis:6379
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/Users/sellgren/web/dev/ztm/codeAnalysis/smart-brain-api
+    # Unnecessary due to new feature network
+    # links:
+    #  - postgres 
+  
+  #Postgres
+  postgres:
+    container_name: postgres
+    build: ./postgres
+    environment:
+      POSTGRES_USER: sally
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: smart-brain-docker
+      POSTGRES_HOST: postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+      
+    
